@@ -1,12 +1,21 @@
-# tplincloud
+/**
+ * @Title
+ * @Author: liwei
+ * @Description:  TODO
+ * @File:  tplinkcloud_fac
+ * @Version: 1.0.0
+ * @Date: 2025/03/21 10:06
+ * @Update liwei 2025/3/21 10:06
+ */
 
-## tplink商云平台SDK接入
+package tplinkcloud
 
-## 项目介绍
-tplincloud是一个基于tplink商云2.0 主要实现IPC设备信息采集，视频预览，回放，双向对讲，云台操作，截图录像
+type TplinkCloudFactory interface {
+	MakeTplinkCloud() IsTplinkCloud
+}
 
-#### 方法介绍
-```azure
+type IsTplinkCloud interface {
+	//安防设备2.0接入
 	//1.4.3.3.3获取项目型应用下设备列表
 	GetIpcList() ([]DeviceInfo, error)
 
@@ -27,4 +36,4 @@ tplincloud是一个基于tplink商云2.0 主要实现IPC设备信息采集，视
 
 	//1.4.5.9搜索当天所有人形侦测录像数据
 	SearchHumanDetectionVideo(qrCode string, searchDay string) (*SearchVideoResult, error)
-```
+}
