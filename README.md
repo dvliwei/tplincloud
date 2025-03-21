@@ -28,3 +28,18 @@ tplincloud是一个基于tplink商云2.0 主要实现IPC设备信息采集，视
 	//1.4.5.9搜索当天所有人形侦测录像数据
 	SearchHumanDetectionVideo(qrCode string, searchDay string) (*SearchVideoResult, error)
 ```
+
+#### 下载安装
+```azure
+go get github.com/dvliwei/tplincloud@
+```
+
+#### 使用
+````azure
+	var tpconfig tplinkcloud.TplinkCloudConfig
+	tpconfig.Ak = "xxxxxx"
+	tpconfig.Sk = "xxxxxx"
+	tpconfig.TerminalId = "xxxxxx"
+	tplincloudRes := tplinkcloud.NewTplinkCloud(&tpconfig)
+	result, err := tplincloudRes.MakeTplinkCloud().GetIpcList()
+````
