@@ -165,3 +165,70 @@ type (
 		ErrorCode int               `json:"error_code"`
 	}
 )
+
+type (
+	SubmitCaptureImageTaskRequest struct {
+		QrCode       string `json:"qrCode"`
+		ChannelId    int    `json:"channelId"`
+		ImageType    int    `json:"type"`
+		ExpireDays   int    `json:"expireDays,omitempty"`
+		PlaybackTime string `json:"playbackTime,omitempty"`
+		ImageId      string `json:"imageId,omitempty"`
+	}
+	SubmitCaptureImageTaskResponse struct {
+		ErrorCode int `json:"error_code"`
+		Result    struct {
+			TaskId string `json:"taskId"`
+		}
+	}
+)
+
+type (
+	GetTaskInfoRequest struct {
+		TaskId string `json:"taskId"`
+	}
+	GetTaskInfoResponse struct {
+		ErrorCode int `json:"error_code"`
+		Result    struct {
+			TaskID     string `json:"taskId"`
+			Type       int    `json:"type"`
+			State      int    `json:"state"`
+			FileCount  int    `json:"fileCount"`
+			TotalBytes int    `json:"totalBytes"`
+			ErrorCode  int    `json:"error_code"`
+			CreateTime string `json:"createTime"`
+		}
+	}
+)
+
+// Response 定义整个响应的结构体
+type (
+	GetTaskFilePageRequest struct {
+		TaskId      string `json:"taskId"`
+		PageIndex   int    `json:"pageIndex"`
+		PageSize    int    `json:"pageSize"`
+		UrlRequired bool   `json:"urlRequired"`
+	}
+	GetTaskFilePageResponse struct {
+		Result    GetTaskFilePageResult `json:"result"`
+		ErrorCode int                   `json:"error_code"`
+	}
+
+	// Result 定义 result 字段的结构体
+
+	GetTaskFilePageResult struct {
+		List  []FileInfo `json:"list"`
+		Total int        `json:"total"`
+	}
+
+	// FileInfo 定义 list 数组中每个元素的结构体
+	FileInfo struct {
+		FileID       string   `json:"fileId"`
+		TaskID       string   `json:"taskId"`
+		SegmentCount int      `json:"segmentCount"`
+		TotalBytes   int      `json:"totalBytes"`
+		URLs         []string `json:"urls"`
+		CreateTime   string   `json:"createTime"`
+		ExpireTime   string   `json:"expireTime"`
+	}
+)

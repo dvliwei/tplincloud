@@ -36,4 +36,13 @@ type IsTplinkCloud interface {
 
 	//1.4.5.9搜索当天所有人形侦测录像数据
 	SearchHumanDetectionVideo(qrCode string, searchDay string) (*SearchVideoResult, error)
+
+	//1.4.9.2提交设备抓图任务
+	SubmitCaptureImageTask(qrCode string, imageType int, expireDays int, playbackTime string, imageId string) (string, error)
+
+	//1.4.9.5查询任务详情
+	GetTaskInfo(taskId string) (*GetTaskInfoResponse, error)
+
+	//1.4.9.6分页查询任务文件列表
+	GetTaskFilePage(taskId string, pageNum int, pageSize int) (*GetTaskFilePageResponse, error)
 }

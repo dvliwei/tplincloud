@@ -222,3 +222,78 @@ func (res *tplinkCloudIPCRes) SearchHumanDetectionVideo(qrCode string, searchDay
 	}
 	return &response.Result, nil
 }
+
+// 提交设备抓图任务
+func (res *tplinkCloudIPCRes) SubmitCaptureImageTask(qrCode string, imageType int, expireDays int, playbackTime string, imageId string) (string, error) {
+	var (
+		err      error
+		request  SubmitCaptureImageTaskRequest
+		response SubmitCaptureImageTaskResponse
+	)
+	request.QrCode = qrCode
+	request.ChannelId = 1
+	request.ImageType = imageType
+	request.ExpireDays = expireDays
+	request.PlaybackTime = playbackTime
+	request.ImageId = imageId
+	res.TplinkCloudBase.Path = "/vms/open/videoFetchService/v1/submitCaptureImageTask"
+	res.TplinkCloudBase.Payload = request
+	respBytes, err := res.PostRequest()
+	if err != nil {
+		return "", err
+	}
+	if err := json.Unmarshal(respBytes, &response); err != nil {
+		return "", err
+	}
+	if response.ErrorCode != 0 {
+		return "", fmt.Errorf("submitCaptureImageTask error: %d", response.ErrorCode)
+	}
+	return response.Result.TaskId, nil
+}
+
+func (res *tplinkCloudIPCRes) GetTaskInfo(taskId string) (*GetTaskInfoResponse, error) {
+	var (
+		err      error
+		request  GetTaskInfoRequest
+		response GetTaskInfoResponse
+	)
+	request.TaskId = taskId
+	res.TplinkCloudBase.Path = "/vms/open/videoFetchService/v1/getTaskInfo"
+	res.TplinkCloudBase.Payload = request
+	respBytes, err := res.PostRequest()
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(respBytes, &response); err != nil {
+		return nil, err
+	}
+	if response.ErrorCode != 0 {
+		return nil, fmt.Errorf("getTaskInfo error: %d", response.ErrorCode)
+	}
+	return &response, nil
+}
+
+func (res *tplinkCloudIPCRes) GetTaskFilePage(taskId string, pageNum int, pageSize int) (*GetTaskFilePageResponse, error) {
+	var (
+		err      error
+		response GetTaskFilePageResponse
+		request  GetTaskFilePageRequest
+	)
+	request.TaskId = taskId
+	request.PageIndex = pageNum
+	request.PageSize = pageSize
+	request.UrlRequired = true
+	res.TplinkCloudBase.Path = "/vms/open/videoFetchService/v1/getTaskFilePage"
+	res.TplinkCloudBase.Payload = request
+	respBytes, err := res.PostRequest()
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(respBytes, &response); err != nil {
+		return nil, err
+	}
+	if response.ErrorCode != 0 {
+		return nil, fmt.Errorf("getTaskFilePage error: %d", response.ErrorCode)
+	}
+	return &response, nil
+}
