@@ -29,7 +29,7 @@ type TplinkCloudBase struct {
 	Sk         string
 	TerminalId string
 	Path       string
-	Payload    any
+	Payload    interface{}
 	PayloadStr string
 }
 
